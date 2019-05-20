@@ -1,5 +1,5 @@
-$GameShortname = 'CSS'
-$GameFullname = 'Counter-Strike Source'
+$GameShortname = 'KF2'
+$GameFullname = 'Killing Floor 2'
 $host.UI.RawUI.WindowTitle = "$GameFullname Server Menu"
 # ================ SteamCMD Settings ================
 # Steam Username and Password (Or anonymous)
@@ -10,9 +10,9 @@ $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\cstrike\cfg"
+$ConfigLoc = "$ServerLoc\KF2\cfg"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
-$appid = '232330'
+$appid = '232130'
 # Verify server files? (0 = no, 1 = yes)
 $checkvalid = '0'
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
@@ -24,13 +24,10 @@ $authkey = '-authkey '
 $steamid = '+sv_setsteamaccount '
 
 # ================ Server Settings ================
-$ServerName = "Escos $GameShortname Server"
+$ServerName = "Escos $GameFullname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
-$MaxPlayers = '12'
-$Port = '27016'
-$Map = 'de_dust2'
-$Tickrate = '100'
+$Map = 'bioticslab'
 
 function mainMenu {
     $mainMenu = 'X'
@@ -74,8 +71,6 @@ function subMenu1 {
         Write-Host -ForegroundColor Cyan "Extra Settings Menu"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "1"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Create one click server starter"
-        Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "2"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Create Server.cfg"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "3"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Add to Task Scheduler (Requires Administrator)"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "4"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
@@ -84,13 +79,6 @@ function subMenu1 {
         # Start Server
         if($subMenu1 -eq 1){
             New-EasyStart
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
-        }
-        # Creater Server Config
-        if($subMenu1 -eq 2){
-            New-ServerConfig
             
             Write-Host "`nPress any key to return to the previous menu"
             [void][System.Console]::ReadKey($true)
@@ -113,9 +101,9 @@ function subMenu1 {
 }
 
 function Start-Server {
-    if (Test-Path $ServerLoc\srcds.exe) {
-        $paramline = '-console -usercon -condebug -game cstrike'
-        $settings = "-port $Port -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
+    if (Test-Path $ServerLoc\Binaries\Win64\KFserver.exe) {
+        $paramline = '-nographics'
+        $settings = "kf-$Map?adminpassword=$RconPassword"
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -124,7 +112,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\srcds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process -FilePath 'KFserver.exe' -WorkingDirectory "$ServerLoc\Binaries\Win64" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
@@ -145,7 +133,7 @@ function Update-Server {
         Write-Host 'Searching for Server Update'
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
-        Start-Process "$CMDLoc\steamcmd.exe" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
+        Start-Process -FilePath 'steamcmd.exe' -WorkingDirectory "$CMDLoc" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 'Server successfully updated'
@@ -169,31 +157,13 @@ function Update-Server {
     }
 }
 
-function New-ServerConfig {
-    if (Test-Path $ConfigLoc) {
-        $ServerConfig ="
-        hostname           $ServerName
-        sv_password        $ServerPassword
-        rcon_password      $RconPassword
-        exec               match_practice.cfg
-        sv_lan             '0'
-        "
-        Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
-        Write-Host 
-        Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
-     } else {
-        Write-Host 
-        Write-Host 'Config folder not found.' -ForegroundColor Red
-    }
-}
-
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
         $StartupConfig ="
         Write-Host 'Updating Server'
         Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
         Write-Host 'Starting Server'
-        Start-Process $ServerLoc\srcds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
+        Start-Process $ServerLoc\Binaries\Win64\KFserver.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
         "
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 

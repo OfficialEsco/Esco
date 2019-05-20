@@ -1,5 +1,5 @@
-$GameShortname = 'TheShip'
-$GameFullname = 'The Ship'
+$GameShortname = 'CSS'
+$GameFullname = 'Counter-Strike Source'
 $host.UI.RawUI.WindowTitle = "$GameFullname Server Menu"
 # ================ SteamCMD Settings ================
 # Steam Username and Password (Or anonymous)
@@ -12,7 +12,7 @@ $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
 $ConfigLoc = "$ServerLoc\cstrike\cfg"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
-$appid = '2403'
+$appid = '232330'
 # Verify server files? (0 = no, 1 = yes)
 $checkvalid = '0'
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
@@ -24,11 +24,13 @@ $authkey = '-authkey '
 $steamid = '+sv_setsteamaccount '
 
 # ================ Server Settings ================
-$ServerName = "Escos $GameFullname Server"
+$ServerName = "Escos $GameShortname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
+$MaxPlayers = '12'
 $Port = '27016'
-$Map = 'cotopaxi'
+$Map = 'de_dust2'
+$Tickrate = '100'
 
 function mainMenu {
     $mainMenu = 'X'
@@ -112,8 +114,8 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\srcds.exe) {
-        $paramline = '-nographics -console -usercon -condebug -game ship' 
-        $settings = "-hostport $Port +map $Map"
+        $paramline = '-console -usercon -condebug -game cstrike'
+        $settings = "-port $Port -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -122,7 +124,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\srcds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process -FilePath 'srcds.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
@@ -143,7 +145,7 @@ function Update-Server {
         Write-Host 'Searching for Server Update'
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
-        Start-Process "$CMDLoc\steamcmd.exe" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
+        Start-Process -FilePath 'steamcmd.exe' -WorkingDirectory "$CMDLoc" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 'Server successfully updated'
@@ -173,6 +175,8 @@ function New-ServerConfig {
         hostname           $ServerName
         sv_password        $ServerPassword
         rcon_password      $RconPassword
+        exec               match_practice.cfg
+        sv_lan             '0'
         "
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 

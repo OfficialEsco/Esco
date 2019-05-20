@@ -1,18 +1,18 @@
-$GameShortname = 'KF2'
-$GameFullname = 'Killing Floor 2'
+$GameShortname = '7DTD'
+$GameFullname = '7 Days to Die'
 $host.UI.RawUI.WindowTitle = "$GameFullname Server Menu"
 # ================ SteamCMD Settings ================
 # Steam Username and Password (Or anonymous)
-$SteamUsername = 'anonymous'
-$SteamPassword = ''
+$SteamUsername = '' #Required
+$SteamPassword = '' #Required
 # SteamCMD Location
 $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\KF2\cfg"
+$ConfigLoc = "$ServerLoc\Data\Config"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
-$appid = '232130'
+$appid = '294420'
 # Verify server files? (0 = no, 1 = yes)
 $checkvalid = '0'
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
@@ -24,10 +24,8 @@ $authkey = '-authkey '
 $steamid = '+sv_setsteamaccount '
 
 # ================ Server Settings ================
-$ServerName = "Escos $GameFullname Server"
-$ServerPassword = 'qwerty'
-$RconPassword = 'qwerty'
-$Map = 'bioticslab'
+$Game_Version = "Stable"
+    if ( $Game_Version -eq "Beta" )        { $Version = '-beta latest_experimental' }
 
 function mainMenu {
     $mainMenu = 'X'
@@ -101,9 +99,8 @@ function subMenu1 {
 }
 
 function Start-Server {
-    if (Test-Path $ServerLoc\Binaries\Win64\KFserver.exe) {
-        $paramline = '-nographics'
-        $settings = "kf-$Map?adminpassword=$RconPassword"
+    if (Test-Path $ServerLoc\7daystodieserver.exe) {
+        $paramline=-batchmode -nographics -configfile=serverconfig.xml -dedicated $authkey $steamid #-logfile 7DaysToDieServer_Data\output_log%LOGTIMESTAMP%.txt 
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -112,14 +109,15 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\Binaries\Win64\KFserver.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process -FilePath '7daystodieserver.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
         Write-Host 'Have fun!'
-        Write-Host 
+        Write-Host 'Go to localhost:8081 to shutdown the server correctly'
+        Write-Host ''
      } else {
         Write-Host
         Write-Host "Server executable not found, install server files or check server location." -ForegroundColor Red
@@ -133,7 +131,7 @@ function Update-Server {
         Write-Host 'Searching for Server Update'
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
-        Start-Process "$CMDLoc\steamcmd.exe" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
+        Start-Process -FilePath 'steamcmd.exe' -WorkingDirectory "$CMDLoc" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam $Version +quit" -Wait 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 'Server successfully updated'
@@ -161,9 +159,9 @@ function New-EasyStart {
     if (Test-Path $ServerLoc) {
         $StartupConfig ="
         Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
+        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam $Version +quit -Wait
         Write-Host 'Starting Server'
-        Start-Process $ServerLoc\Binaries\Win64\KFserver.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
+        Start-Process $ServerLoc\7daystodieserver.exe -ArgumentList $paramline $authkey $steamid -NoNewWindow
         "
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 

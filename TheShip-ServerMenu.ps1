@@ -1,5 +1,5 @@
-$GameShortname = 'CSGO'
-$GameFullname = 'Counter-Strike Global Offensive'
+$GameShortname = 'TheShip'
+$GameFullname = 'The Ship'
 $host.UI.RawUI.WindowTitle = "$GameFullname Server Menu"
 # ================ SteamCMD Settings ================
 # Steam Username and Password (Or anonymous)
@@ -10,9 +10,9 @@ $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\csgo\cfg"
+$ConfigLoc = "$ServerLoc\cstrike\cfg"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
-$appid = '740'
+$appid = '2403'
 # Verify server files? (0 = no, 1 = yes)
 $checkvalid = '0'
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
@@ -24,21 +24,11 @@ $authkey = '-authkey '
 $steamid = '+sv_setsteamaccount '
 
 # ================ Server Settings ================
-$ServerName = "Escos $GameShortname Server"
+$ServerName = "Escos $GameFullname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
-$MaxPlayers = '12'
 $Port = '27016'
-$Map = 'de_dust2'
-$Tickrate = '128'
-$Select_Gamemode = "Competative"
-    if ( $Select_Gamemode -eq "Practice" )      { $Gamemode = '+game_type 0 +game_mode 1 +mapgroup mg_bomb_se +exec match_practice.cfg' }
-    if ( $Select_Gamemode -eq "Warmup" )        { $Gamemode = '+game_type 0 +game_mode 1 +mapgroup mg_bomb_se +exec match_warmup.cfg' }
-    if ( $Select_Gamemode -eq "Competative" )   { $Gamemode = '+game_type 0 +game_mode 1 +mapgroup mg_bomb' }
-    if ( $Select_Gamemode -eq "Deathmatch" )    { $Gamemode = '+game_type 1 +game_mode 2 +mapgroup mg_allclassic' }
-    if ( $Select_Gamemode -eq "Casual" )        { $Gamemode = '+game_type 0 +game_mode 0 +mapgroup mg_active' }
-    if ( $Select_Gamemode -eq "ArmsRace" )      { $Gamemode = '+game_type 1 +game_mode 0 +mapgroup mg_armsrace' }
-    if ( $Select_Gamemode -eq "Demolition" )    { $Gamemode = '+game_type 1 +game_mode 1 +mapgroup mg_demolition' }
+$Map = 'cotopaxi'
 
 function mainMenu {
     $mainMenu = 'X'
@@ -122,8 +112,8 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\srcds.exe) {
-        $paramline = '-nographics -console -usercon -condebug -game csgo'
-        $settings = "-port $Port $Gamemode -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
+        $paramline = '-nographics -console -usercon -condebug -game ship' 
+        $settings = "-hostport $Port +map $Map"
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -132,7 +122,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\srcds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process -FilePath 'srcds.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
@@ -153,7 +143,7 @@ function Update-Server {
         Write-Host 'Searching for Server Update'
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
-        Start-Process "$CMDLoc\steamcmd.exe" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
+        Start-Process -FilePath 'steamcmd.exe' -WorkingDirectory "$CMDLoc" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 'Server successfully updated'
@@ -183,11 +173,10 @@ function New-ServerConfig {
         hostname           $ServerName
         sv_password        $ServerPassword
         rcon_password      $RconPassword
-        exec               match_practice.cfg
         "
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
-        Write-Host 'Server.cfg created.' -ForegroundColor Green
+        Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
      } else {
         Write-Host 
         Write-Host 'Config folder not found.' -ForegroundColor Red

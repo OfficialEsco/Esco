@@ -127,7 +127,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\RustDedicated.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process -FilePath 'RustDedicated.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
@@ -148,7 +148,7 @@ function Update-Server {
         Write-Host 'Searching for Server Update'
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
-        Start-Process "$CMDLoc\steamcmd.exe" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
+        Start-Process -FilePath 'steamcmd.exe' -WorkingDirectory "$CMDLoc" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 'Server successfully updated'

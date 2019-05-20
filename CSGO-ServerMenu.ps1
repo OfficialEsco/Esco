@@ -1,5 +1,5 @@
-$GameShortname = 'CS'
-$GameFullname = 'Counter-Strike 1.6'
+$GameShortname = 'CSGO'
+$GameFullname = 'Counter-Strike Global Offensive'
 $host.UI.RawUI.WindowTitle = "$GameFullname Server Menu"
 # ================ SteamCMD Settings ================
 # Steam Username and Password (Or anonymous)
@@ -10,9 +10,9 @@ $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\cstrike\cfg"
+$ConfigLoc = "$ServerLoc\csgo\cfg"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
-$appid = '90'
+$appid = '740'
 # Verify server files? (0 = no, 1 = yes)
 $checkvalid = '0'
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
@@ -24,13 +24,21 @@ $authkey = '-authkey '
 $steamid = '+sv_setsteamaccount '
 
 # ================ Server Settings ================
-$ServerName = "Escos $GameFullname Server"
+$ServerName = "Escos $GameShortname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
 $MaxPlayers = '12'
 $Port = '27016'
 $Map = 'de_dust2'
-$Tickrate = '100'
+$Tickrate = '128'
+$Select_Gamemode = "Competative"
+    if ( $Select_Gamemode -eq "Practice" )      { $Gamemode = '+game_type 0 +game_mode 1 +mapgroup mg_bomb_se +exec match_practice.cfg' }
+    if ( $Select_Gamemode -eq "Warmup" )        { $Gamemode = '+game_type 0 +game_mode 1 +mapgroup mg_bomb_se +exec match_warmup.cfg' }
+    if ( $Select_Gamemode -eq "Competative" )   { $Gamemode = '+game_type 0 +game_mode 1 +mapgroup mg_bomb' }
+    if ( $Select_Gamemode -eq "Deathmatch" )    { $Gamemode = '+game_type 1 +game_mode 2 +mapgroup mg_allclassic' }
+    if ( $Select_Gamemode -eq "Casual" )        { $Gamemode = '+game_type 0 +game_mode 0 +mapgroup mg_active' }
+    if ( $Select_Gamemode -eq "ArmsRace" )      { $Gamemode = '+game_type 1 +game_mode 0 +mapgroup mg_armsrace' }
+    if ( $Select_Gamemode -eq "Demolition" )    { $Gamemode = '+game_type 1 +game_mode 1 +mapgroup mg_demolition' }
 
 function mainMenu {
     $mainMenu = 'X'
@@ -113,9 +121,9 @@ function subMenu1 {
 }
 
 function Start-Server {
-    if (Test-Path $ServerLoc\hlds.exe) {
-        $paramline = '-nographics -console -usercon -condebug -game cstrike'
-        $settings = "-port $Port -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
+    if (Test-Path $ServerLoc\srcds.exe) {
+        $paramline = '-nographics -console -usercon -condebug -game csgo'
+        $settings = "-port $Port $Gamemode -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -124,7 +132,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\hlds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process -FilePath 'srcds.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
@@ -145,7 +153,7 @@ function Update-Server {
         Write-Host 'Searching for Server Update'
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 
-        Start-Process "$CMDLoc\steamcmd.exe" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
+        Start-Process -FilePath 'steamcmd.exe' -WorkingDirectory "$CMDLoc" -ArgumentList "+login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit" -Wait 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host 'Server successfully updated'
@@ -175,31 +183,11 @@ function New-ServerConfig {
         hostname           $ServerName
         sv_password        $ServerPassword
         rcon_password      $RconPassword
-        exec               'match_practice.cfg'
-
-        //Settings
-        maxplayers '12'
-        sv_lan '0'
-        sv_region '3'
-
-        sv_minrate '0'
-        sv_maxrate '101000'
-        sv_minupdaterate '101'
-        sv_maxupdaterate '101'
-        sv_mincmdrate '100'
-        sv_maxcmdrate '100'
-        sys_ticrate '1000'
-
-        exec listip.cfg
-        exec banned.cfg
-        exec match_warmup.cfg
-
-        // Execute the Admin Mod configuration file
-        exec addons/adminmod/config/adminmod.cfg
+        exec               match_practice.cfg
         "
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
-        Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
+        Write-Host 'Server.cfg created.' -ForegroundColor Green
      } else {
         Write-Host 
         Write-Host 'Config folder not found.' -ForegroundColor Red
@@ -212,7 +200,7 @@ function New-EasyStart {
         Write-Host 'Updating Server'
         Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
         Write-Host 'Starting Server'
-        Start-Process $ServerLoc\hlds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
+        Start-Process $ServerLoc\srcds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
         "
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
