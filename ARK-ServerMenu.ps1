@@ -137,7 +137,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process -FilePath 'ShooterGameServer.exe' -WorkingDirectory "$ServerLoc\ShooterGame\Binaries\Win64" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"

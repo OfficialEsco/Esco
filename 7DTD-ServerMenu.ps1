@@ -9,8 +9,6 @@ $SteamPassword = '' #Required
 $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
-# Game Config Folder Location
-$ConfigLoc = "$ServerLoc\Data\Config"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
 $appid = '294420'
 # Verify server files? (0 = no, 1 = yes)
@@ -26,6 +24,10 @@ $steamid = '+sv_setsteamaccount '
 # ================ Server Settings ================
 $Game_Version = "Stable"
     if ( $Game_Version -eq "Beta" )        { $Version = '-beta latest_experimental' }
+
+
+# Etc 
+$paramline=-batchmode -nographics -configfile=serverconfig.xml -dedicated $authkey $steamid #-logfile 7DaysToDieServer_Data\output_log%LOGTIMESTAMP%.txt 
 
 function mainMenu {
     $mainMenu = 'X'
@@ -100,8 +102,6 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\7daystodieserver.exe) {
-        $paramline=-batchmode -nographics -configfile=serverconfig.xml -dedicated $authkey $steamid #-logfile 7DaysToDieServer_Data\output_log%LOGTIMESTAMP%.txt 
-
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -109,7 +109,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process -FilePath '7daystodieserver.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\7daystodieserver.exe" -ArgumentList "$paramline $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"

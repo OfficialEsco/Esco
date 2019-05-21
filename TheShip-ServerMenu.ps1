@@ -10,7 +10,7 @@ $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\cstrike\cfg"
+$ConfigLoc = "$ServerLoc\theship\cfg"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
 $appid = '2403'
 # Verify server files? (0 = no, 1 = yes)
@@ -29,6 +29,10 @@ $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
 $Port = '27016'
 $Map = 'cotopaxi'
+
+# Etc
+$paramline = '-nographics -console -usercon -condebug -game ship' 
+$settings = "-hostport $Port +map $Map"
 
 function mainMenu {
     $mainMenu = 'X'
@@ -112,9 +116,6 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\srcds.exe) {
-        $paramline = '-nographics -console -usercon -condebug -game ship' 
-        $settings = "-hostport $Port +map $Map"
-
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -122,7 +123,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process -FilePath 'srcds.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\srcds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"

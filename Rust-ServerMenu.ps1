@@ -35,6 +35,11 @@ $decay = '0'
 # Game Config Folder Location
 $ConfigLoc = "$ServerLoc\server\$identity\cfg"
 
+# Etc
+$paramline = '-batchmode -nographics'
+$settings = "+server.hostname $ServerName +server.maxplayers $MaxPlayers +server.port $Port +rcon.port $RconPort +rcon.password $RconPassword +server.tickrate $Tickrate +server.identity $Identity +server.wolrdsize $Worldsize -cfg $cfg"
+
+
 function mainMenu {
     $mainMenu = 'X'
     while($mainMenu -ne ''){
@@ -117,9 +122,6 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\RustDedicated.exe) {
-        $paramline = '-batchmode -nographics'
-        $settings = "+server.hostname $ServerName +server.maxplayers $MaxPlayers +server.port $Port +rcon.port $RconPort +rcon.password $RconPassword +server.tickrate $Tickrate +server.identity $Identity +server.wolrdsize $Worldsize -cfg $cfg"
-
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -127,7 +129,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process -FilePath 'RustDedicated.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\RustDedicated.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"

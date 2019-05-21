@@ -32,6 +32,10 @@ $Port = '27016'
 $Map = 'de_dust2'
 $Tickrate = '100'
 
+# Etc
+$paramline = '-nographics -console -usercon -condebug -game cstrike'
+$settings = "-port $Port -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
+
 function mainMenu {
     $mainMenu = 'X'
     while($mainMenu -ne ''){
@@ -114,9 +118,6 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\hlds.exe) {
-        $paramline = '-nographics -console -usercon -condebug -game cstrike'
-        $settings = "-port $Port -tickrate $Tickrate -maxplayers_override $MaxPlayers +map $Map"
-
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -124,7 +125,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process -FilePath 'hlds.exe' -WorkingDirectory "$ServerLoc" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\hlds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"

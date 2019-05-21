@@ -15,6 +15,10 @@ $JarName = 'server.jar'
 #Server Location
 $ServerLoc = "D:\Servers\$GameFullname\$ServerName"
 
+# Etc
+$paramline = '-Xmx10G -Xms10G'
+$parmaline2 = "-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+CMSParallelRemarkEnabled -XX:MaxGCPauseMillis=50 -XX:+DisableExplicitGC -XX:+AggressiveOpts -XX:+UseFastAccessorMethods -XX:+UseBiasedLocking -XX:TargetSurvivorRatio=90"
+
 function mainMenu {
     $mainMenu = 'X'
     while($mainMenu -ne ''){
@@ -88,9 +92,6 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\$JarName) {
-        $paramline = '-Xmx10G -Xms10G'
-        $parmaline2 = "-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalMode -XX:+CMSIncrementalPacing -XX:+CMSParallelRemarkEnabled -XX:MaxGCPauseMillis=50 -XX:+DisableExplicitGC -XX:+AggressiveOpts -XX:+UseFastAccessorMethods -XX:+UseBiasedLocking -XX:TargetSurvivorRatio=90"
-        
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -99,7 +100,6 @@ function Start-Server {
         Write-Host 'Launching . . .'
         Write-Host 
         Start-Process -Filepath java -ArgumentList "-Xmx10G -Xms10G -jar $JarName nogui" -WorkingDirectory "$ServerLoc"  -Wait -NoNewWindow
-        Pause
      } else {
         Write-Host
         Write-Host "Minecraft Jar not found, Downloading Jar" -ForegroundColor Red

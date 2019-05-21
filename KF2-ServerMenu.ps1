@@ -29,6 +29,11 @@ $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
 $Map = 'bioticslab'
 
+
+# Etc
+$paramline = '-nographics'
+$settings = "kf-$Map?adminpassword=$RconPassword"
+
 function mainMenu {
     $mainMenu = 'X'
     while($mainMenu -ne ''){
@@ -102,9 +107,6 @@ function subMenu1 {
 
 function Start-Server {
     if (Test-Path $ServerLoc\Binaries\Win64\KFserver.exe) {
-        $paramline = '-nographics'
-        $settings = "kf-$Map?adminpassword=$RconPassword"
-
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -112,7 +114,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process -FilePath 'KFserver.exe' -WorkingDirectory "$ServerLoc\Binaries\Win64" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\Binaries\Win64\KFserver.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
