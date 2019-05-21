@@ -10,7 +10,7 @@ $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\cstrike\cfg"
+$ConfigLoc = "$ServerLoc\cstrike"
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
 $appid = '90'
 # Verify server files? (0 = no, 1 = yes)
