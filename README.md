@@ -27,5 +27,11 @@
 - [X] Counter-Strike Global Offensive
 - [X] Garrys Mod
 - [X] Killing Floor 2
+- [X] Minecraft
 - [X] Rust
 - [X] The Ship
+
+### Autoexec
+- [X] Counter-Strike 1.6
+- [X] Counter-Strike Source
+- [X] Counter-Strike Global Offensive
