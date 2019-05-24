@@ -1,8 +1,8 @@
-# 7 Days to Die
+# The Ship
 
 ## Work in Progress
 
-- [ ] 7 Days to Die Server Menu
+- [ ] The Ship Server Menu
 
 
 ## Finished

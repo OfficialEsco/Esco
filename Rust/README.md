@@ -1,8 +1,8 @@
-# 7 Days to Die
+# Rust
 
 ## Work in Progress
 
-- [ ] 7 Days to Die Server Menu
+- [ ] Rust Server Menu
 
 
 ## Finished

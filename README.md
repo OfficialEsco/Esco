@@ -19,3 +19,13 @@
 ### Server Menus
 - [X] Minecraft
 
+### Start.bat Server Starters
+- [X] 7 Days to Die
+- [X] ARK: Survival Evolved
+- [X] Counter-Strike 1.6
+- [X] Counter-Strike Source
+- [X] Counter-Strike Global Offensive
+- [X] Garrys Mod
+- [X] Killing Floor 2
+- [X] Rust
+- [X] The Ship

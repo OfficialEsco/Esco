@@ -1,8 +1,8 @@
-# 7 Days to Die
+# Killing Floor 2
 
 ## Work in Progress
 
-- [ ] 7 Days to Die Server Menu
+- [ ] Killing Floor 2 Server Menu
 
 
 ## Finished
