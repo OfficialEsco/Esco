@@ -6,9 +6,9 @@
 
 - [ ] 7 Days to Die
 - [ ] ARK: Survival Evolved
-- [ ] Counter Strike 1.6
-- [ ] Counter Strike Source
-- [ ] Counter Strike Global Offensive
+- [ ] Counter-Strike 1.6
+- [ ] Counter-Strike Source
+- [ ] Counter-Strike Global Offensive
 - [ ] Garrys Mod
 - [ ] Killing Floor 2
 - [ ] Rust
