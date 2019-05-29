@@ -9,6 +9,8 @@ $SteamPassword = ''
 $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
+# Server Location
+$BackupLoc = "$ServerLoc\Backup"
 # Game Config Folder Location
 $ConfigLoc = "$ServerLoc\ARK\cfg"
 # Mods Folder
@@ -46,6 +48,8 @@ function mainMenu {
             Write-Host -ForegroundColor DarkCyan " Start"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "2"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Update"
+        Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "8"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
+            Write-Host -ForegroundColor DarkCyan " Backup Map"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "9"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Extra Settings"
         $mainMenu = Read-Host "`nSelection (leave blank to quit)"
@@ -59,6 +63,13 @@ function mainMenu {
         # Update Server
         if($mainMenu -eq 2){
             Update-Server
+
+            Write-Host "`nPress any key to return to the previous menu"
+            [void][System.Console]::ReadKey($true)
+        }
+        # Create a Backup
+        if($mainMenu -eq 8){
+            New-ServerBackup
 
             Write-Host "`nPress any key to return to the previous menu"
             [void][System.Console]::ReadKey($true)
@@ -250,6 +261,13 @@ function Unregister-ServerTask {
         Write-Host
         Write-Host 'Task not found.' -ForegroundColor Red
     }
+}
+
+function New-ServerBackup {
+    if (!(Test-Path $BackupLoc)) { New-Item -ItemType Directory -Force -Path $BackupLoc }
+    $GetDate = "$(Get-Date -UFormat "%d%m%y-%H%M")"
+    Compress-Archive -Path "$ServerLoc\ShooterGame\Saved\SavedArks\$Map.ark" -DestinationPath "$BackupLoc\$GetDate-$Map.zip" -Force -CompressionLevel "Fastest"
+    Write-Host "Backup of $Map Created" -ForegroundColor Green
 }
 
 mainMenu
