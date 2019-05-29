@@ -195,12 +195,12 @@ function Copy-ModsFolder {
 
 function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
-        $ServerConfig ="
-        SessionName=$ServerName
-        ServerPassword=$ServerPassword
-        ServerAdminPassword=$RconPassword
-        MaxPlayers=$MaxPlayers
-        "
+        $ServerConfig = @(
+        "SessionName=$ServerName",
+        "ServerPassword=$ServerPassword",
+        "ServerAdminPassword=$RconPassword",
+        "MaxPlayers=$MaxPlayers" )
+        
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
