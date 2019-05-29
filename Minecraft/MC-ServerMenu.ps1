@@ -122,6 +122,7 @@ function Start-Server {
         }
 
         Invoke-WebRequest -Uri 'https://launcher.mojang.com/v1/objects/f1a0073671057f01aa843443fef34330281333ce/server.jar' -OutFile "$ServerLoc\$JarName"
+        Update-EULA
         Start-Server
     }
 }
@@ -171,14 +172,31 @@ function New-ServerConfig {
         "prevent-proxy-connections=false",
         "use-native-transport=true",
         "motd=$ServerName",
-        "enable-rcon=false" )
-        
+        "enable-rcon=false" 
+        )
         Set-Content -Value $ServerConfig -Path "$ServerLoc\server.properties"
         Write-Host 
         Write-Host 'Server Properties created.' -ForegroundColor Green
      } else {
         Write-Host 
         Write-Host 'Config folder not found.' -ForegroundColor Red
+    }
+}
+
+function Update-EULA {
+    $GetTime = Get-Date
+    $EulaAccept = @( 
+        "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).",
+        "#$GetTime",
+        "eula=true"
+    )
+
+    if (Test-Path $ServerLoc) {
+        Set-Content -Value $EulaAccept -Path "$ServerLoc\eula.txt"
+        Write-Host 'EULA Accepted' -ForegroundColor Green
+     } else {
+        Write-Host 
+        Write-Host 'Server folder not found.' -ForegroundColor Red
     }
 }
 
