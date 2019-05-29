@@ -17,6 +17,7 @@ $Whitelist = 'False' # True or False
 
 # Server Location
 $ServerLoc = "D:\Servers\$GameFullname\$ServerName"
+$BackupLoc = "D:\Servers\Backup\$GameFullName"
 
 # Parmlines
 $paramline = '-Xmx10G -Xms10G'
@@ -30,12 +31,21 @@ function mainMenu {
         Write-Host -ForegroundColor Cyan "Main Menu"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "1"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Start"
+        Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "8"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
+            Write-Host -ForegroundColor DarkCyan " Backup Server"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "9"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Extra Settings"
         $mainMenu = Read-Host "`nSelection (leave blank to quit)"
         # Start Server
         if($mainMenu -eq 1){
             Start-Server
+
+            Write-Host "`nPress any key to return to the previous menu"
+            [void][System.Console]::ReadKey($true)
+        }
+        # Create a Backup
+        if($mainMenu -eq 8){
+            New-ServerBackup
 
             Write-Host "`nPress any key to return to the previous menu"
             [void][System.Console]::ReadKey($true)
@@ -69,7 +79,7 @@ function subMenu1 {
             Write-Host "`nPress any key to return to the previous menu"
             [void][System.Console]::ReadKey($true)
         }
-        # Creater Server Config
+        # Create Server Config
         if($subMenu1 -eq 2){
             New-ServerConfig
             
@@ -210,6 +220,13 @@ function Unregister-ServerTask {
         Write-Host
         Write-Host 'Task not found.' -ForegroundColor Red
     }
+}
+
+function New-ServerBackup {
+    if (!(Test-Path $BackupLoc)) { New-Item -ItemType Directory -Force -Path $BackupLoc }
+    $GetDate = "$(Get-Date -UFormat "%d%m%y-%H%M")"
+    Compress-Archive -Path "$ServerLoc\*" -DestinationPath "$BackupLoc\$GetDate-$ServerName.zip" -Force -CompressionLevel "Fastest"
+    Write-Host "Backup Created" -ForegroundColor Green
 }
 
 mainMenu
