@@ -180,12 +180,12 @@ function Update-Server {
 
 function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
-        $ServerConfig ="
-        hostname           $ServerName
-        sv_password        $ServerPassword
-        rcon_password      $RconPassword
-        exec               match_practice.cfg
-        "
+        $ServerConfig = @(
+        "hostname           $ServerName"
+        "sv_password        $ServerPassword"
+        "rcon_password      $RconPassword"
+        "exec               match_practice.cfg"
+        )
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
         Write-Host 'Server.cfg created.' -ForegroundColor Green
@@ -197,12 +197,12 @@ function New-ServerConfig {
 
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
-        $StartupConfig ="
-        Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
-        Write-Host 'Starting Server'
-        Start-Process $ServerLoc\srcds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
-        "
+        $StartupConfig = @(
+        "Write-Host 'Updating Server'",
+        "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait",
+        "Write-Host 'Starting Server'",
+        "Start-Process $ServerLoc\srcds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow"
+        )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
         Write-Host 'Easy Server Start.ps1 created.' -ForegroundColor Green

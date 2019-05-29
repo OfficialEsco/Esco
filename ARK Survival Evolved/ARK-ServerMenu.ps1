@@ -199,8 +199,8 @@ function New-ServerConfig {
         "SessionName=$ServerName",
         "ServerPassword=$ServerPassword",
         "ServerAdminPassword=$RconPassword",
-        "MaxPlayers=$MaxPlayers" )
-        
+        "MaxPlayers=$MaxPlayers" 
+        )
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
@@ -212,12 +212,12 @@ function New-ServerConfig {
 
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
-        $StartupConfig ="
-        Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
-        Write-Host 'Starting Server'
-        Start-Process $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
-        "
+        $StartupConfig = @(
+        "Write-Host 'Updating Server'",
+        "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait",
+        "Write-Host 'Starting Server'",
+        "Start-Process $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow"
+        )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
         Write-Host 'Easy Server Start.ps1 created.' -ForegroundColor Green

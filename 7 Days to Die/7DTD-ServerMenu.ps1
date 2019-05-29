@@ -157,12 +157,12 @@ function Update-Server {
 
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
-        $StartupConfig ="
-        Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam $Version +quit -Wait
-        Write-Host 'Starting Server'
-        Start-Process $ServerLoc\7daystodieserver.exe -ArgumentList $paramline $authkey $steamid -NoNewWindow
-        "
+        $StartupConfig = @(
+        "Write-Host 'Updating Server'",
+        "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam $Version +quit -Wait",
+        "Write-Host 'Starting Server'",
+        "Start-Process $ServerLoc\7daystodieserver.exe -ArgumentList $paramline $authkey $steamid -NoNewWindow"
+        )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
         Write-Host 'Easy Server Start.ps1 created.' -ForegroundColor Green

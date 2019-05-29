@@ -172,32 +172,32 @@ function Update-Server {
 
 function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
-        $ServerConfig ="
-        hostname           $ServerName
-        sv_password        $ServerPassword
-        rcon_password      $RconPassword
-        exec               'match_practice.cfg'
+        $ServerConfig = @(
+        "hostname           $ServerName",
+        "sv_password        $ServerPassword",
+        "rcon_password      $RconPassword",
+        "exec               match_practice.cfg",
 
-        //Settings
-        maxplayers '12'
-        sv_lan '0'
-        sv_region '3'
+        "//Settings",
+        "maxplayers         12",
+        "sv_lan             0",
+        "sv_region          3",
 
-        sv_minrate '0'
-        sv_maxrate '101000'
-        sv_minupdaterate '101'
-        sv_maxupdaterate '101'
-        sv_mincmdrate '100'
-        sv_maxcmdrate '100'
-        sys_ticrate '1000'
+        "sv_minrate         0",
+        "sv_maxrate         101000",
+        "sv_minupdaterate   101",
+        "sv_maxupdaterate   101",
+        "sv_mincmdrate      100",
+        "sv_maxcmdrate      100",
+        "sys_ticrate        1000",
 
-        exec listip.cfg
-        exec banned.cfg
-        exec match_warmup.cfg
+        "exec listip.cfg",
+        "exec banned.cfg",
+        "exec match_warmup.cfg",
 
-        // Execute the Admin Mod configuration file
-        exec addons/adminmod/config/adminmod.cfg
-        "
+        "// Execute the Admin Mod configuration file",
+        "exec addons/adminmod/config/adminmod.cfg" 
+        )
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
@@ -209,12 +209,12 @@ function New-ServerConfig {
 
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
-        $StartupConfig ="
-        Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
-        Write-Host 'Starting Server'
-        Start-Process $ServerLoc\hlds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
-        "
+        $StartupConfig = @(
+        "Write-Host 'Updating Server'",
+        "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait",
+        "Write-Host 'Starting Server'",
+        "Start-Process $ServerLoc\hlds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow"
+        )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
         Write-Host 'Easy Server Start.ps1 created.' -ForegroundColor Green

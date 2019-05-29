@@ -301,57 +301,57 @@ function Update-Server {
 
 function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
-        $ServerConfig ="
-        hostname           $ServerName
-        sv_password        $ServerPassword
-        rcon_password      $RconPassword
+        $ServerConfig = @(
+        "hostname               $ServerName",
+        "sv_password            $ServerPassword",
+        "rcon_password          $RconPassword",
 
-        logging          	'on'
-        sv_region        	'3'
-        sv_lan           	'0'
+        "logging          	    on",
+        "sv_region        	    3",
+        "sv_lan           	    0",
 
-        sv_minrate       	'101000'
-        sv_maxrate       	'101000'
-        sv_minupdaterate 	'101'
-        sv_maxupdaterate 	'101'
-        sv_mincmdrate 		'100'
-        sv_maxcmdrate 		'100'
-        net_maxfilesize  	'100'
+        "sv_minrate       	    101000",
+        "sv_maxrate       	    101000'",
+        "sv_minupdaterate 	    101",
+        "sv_maxupdaterate 	    101",
+        "sv_mincmdrate 		    100",
+        "sv_maxcmdrate 		    100",
+        "net_maxfilesize  	    100",
 
-        mp_timelimit 		'0'
-        sv_airaccelerate 	'100'
-        sv_noclipspeed   	'5'
-        sv_noclipaccelerate	'5'
-        decalfrequency   	'10'
-        sv_defaultgamemode 	'sandbox'
+        "mp_timelimit 		    0",
+        "sv_airaccelerate 	    100",
+        "sv_noclipspeed   	    5",
+        "sv_noclipaccelerate	5",
+        "decalfrequency   	    10",
+        "sv_defaultgamemode 	sandbox",
 
-        sbox_allownpcs  	'1'
-        sbox_godmode     	'0'
-        sbox_plpldamage  	'0'
-        sbox_playergod   	'0'
-        sbox_noclip      	'1'
-        sbox_maxprops    	'150'
-        sbox_maxragdolls 	'5'
-        sbox_maxnpcs     	'10'
-        sbox_maxballoons 	'10'
-        sbox_maxeffects  	'50'
-        sbox_maxdynamite 	'10'
-        sbox_maxlamps    	'20'
-        sbox_maxthrusters	'30'
-        sbox_maxwheels   	'20'
-        sbox_maxhoverballs	'20'
-        sbox_maxvehicles 	'6'
-        sbox_maxbuttons  	'20'
-        sbox_maxsents    	'20'
-        sbox_maxemitters 	'5'
-        sbox_maxspawners 	'3'
-        sbox_maxturrets  	'2'
+        "sbox_allownpcs  	    1",
+        "sbox_godmode     	    0",
+        "sbox_plpldamage  	    0",
+        "sbox_playergod   	    0",
+        "sbox_noclip      	    1",
+        "sbox_maxprops    	    150",
+        "sbox_maxragdolls 	    5",
+        "sbox_maxnpcs     	    10",
+        "sbox_maxballoons 	    10",
+        "sbox_maxeffects  	    50",
+        "sbox_maxdynamite 	    10",
+        "sbox_maxlamps    	    20",
+        "sbox_maxthrusters	    30",
+        "sbox_maxwheels   	    20",
+        "sbox_maxhoverballs	    20",
+        "sbox_maxvehicles 	    6",
+        "sbox_maxbuttons  	    20",
+        "sbox_maxsents    	    20",
+        "sbox_maxemitters 	    5",
+        "sbox_maxspawners 	    3",
+        "sbox_maxturrets  	    2",
 
-        sv_logbans       	'1'
-        sv_logecho       	'1'
-        sv_logfile       	'1'
-        sv_log_onefile   	'0'
-        "
+        "sv_logbans       	    1",
+        "sv_logecho       	    1",
+        "sv_logfile       	    1",
+        "sv_log_onefile   	    0"
+        )
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
@@ -363,12 +363,12 @@ function New-ServerConfig {
 
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
-        $StartupConfig ="
-        Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
-        Write-Host 'Starting Server'
-        Start-Process $ServerLoc\srcds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
-        "
+        $StartupConfig = @(
+        "Write-Host 'Updating Server'",
+        "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait",
+        "Write-Host 'Starting Server'",
+        "Start-Process $ServerLoc\srcds.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow"
+        )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
         Write-Host 'Easy Server Start.ps1 created.' -ForegroundColor Green

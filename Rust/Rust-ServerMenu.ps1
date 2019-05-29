@@ -176,30 +176,30 @@ function Update-Server {
 
 function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
-        $ServerConfig ="
-        server.hostname $ServerName
-        server.description A Rust Server
-        server.headerimage 
-        server.url http://playrust.com
-        server.identity $Identity
-        server.saveinterval 600
-        server.maxplayers $MaxPlayers
-        server.tickrate $Ticksize
-        server.worldsize $Worldsize
-        server.radiation False
-        antihack.enabled False
-        antihack.admincheat False
-        antihack.noclip_protection 0
-        decay.scale $Decay
-        server.secure True
-        server.globalchat True
-        server.idlekick 0
-        server.idlekickmode 0
-        server.idlekickadmins 0
-        xmas.enabled false
-        xmas.spawnrange 50
-        xmas.giftsperplayer 2
-        "
+        $ServerConfig = @(
+        "server.hostname $ServerName",
+        "server.description A Rust Server",
+        "server.headerimage ",
+        "server.url http://playrust.com",
+        "server.identity $Identity",
+        "server.saveinterval 600",
+        "server.maxplayers $MaxPlayers",
+        "server.tickrate $Ticksize",
+        "server.worldsize $Worldsize",
+        "server.radiation False",
+        "antihack.enabled False",
+        "antihack.admincheat False",
+        "antihack.noclip_protection 0",
+        "decay.scale $Decay",
+        "server.secure True",
+        "server.globalchat True",
+        "server.idlekick 0",
+        "server.idlekickmode 0",
+        "server.idlekickadmins 0",
+        "xmas.enabled false",
+        "xmas.spawnrange 50",
+        "xmas.giftsperplayer 2"
+        )
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
@@ -211,12 +211,12 @@ function New-ServerConfig {
 
 function New-EasyStart {
     if (Test-Path $ServerLoc) {
-        $StartupConfig ="
-        Write-Host 'Updating Server'
-        Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait
-        Write-Host 'Starting Server'
-        Start-Process $ServerLoc\RustDedicated.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow
-        "
+        $StartupConfig = @(
+        "Write-Host 'Updating Server'",
+        "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait",
+        "Write-Host 'Starting Server'",
+        "Start-Process $ServerLoc\RustDedicated.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow"
+        )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
         Write-Host 'Easy Server Start.ps1 created.' -ForegroundColor Green
