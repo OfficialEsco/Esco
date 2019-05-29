@@ -17,7 +17,7 @@ $Whitelist = 'False' # True or False
 
 # Server Location
 $ServerLoc = "D:\Servers\$GameFullname\$ServerName"
-$BackupLoc = "D:\Servers\Backup\$GameFullName"
+$BackupLoc = "$ServerLoc\Backup"
 
 # Parmlines
 $paramline = '-Xmx10G -Xms10G'
@@ -32,7 +32,7 @@ function mainMenu {
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "1"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Start"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "8"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Backup Server"
+            Write-Host -ForegroundColor DarkCyan " Backup World"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "9"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Extra Settings"
         $mainMenu = Read-Host "`nSelection (leave blank to quit)"
@@ -225,8 +225,8 @@ function Unregister-ServerTask {
 function New-ServerBackup {
     if (!(Test-Path $BackupLoc)) { New-Item -ItemType Directory -Force -Path $BackupLoc }
     $GetDate = "$(Get-Date -UFormat "%d%m%y-%H%M")"
-    Compress-Archive -Path "$ServerLoc\*" -DestinationPath "$BackupLoc\$GetDate-$ServerName.zip" -Force -CompressionLevel "Fastest"
-    Write-Host "Backup Created" -ForegroundColor Green
+    Compress-Archive -Path "$ServerLoc\$WorldName\*" -DestinationPath "$BackupLoc\$GetDate-$WorldName.zip" -Force -CompressionLevel "Fastest"
+    Write-Host "Backup of $WorldName Created" -ForegroundColor Green
 }
 
 mainMenu
