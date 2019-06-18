@@ -34,7 +34,7 @@ $RconPassword = 'qwerty'
 $MaxPlayers = '100'
 $Port = '7777'
 $Queryport = '27015'
-$Map = 'TheCenter' #(TheIsland / TheCenter)
+$Map = 'TheCenter' #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
 $ForceRespawnDinos = '0'
     if ( $ForceRespawnDinos -eq '1' ) { $RespawnDinos = '-ForceRespawnDinos' }
 
