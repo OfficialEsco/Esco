@@ -12,7 +12,7 @@ $ServerLoc = "D:\Servers\$GameShortname"
 # Server Location
 $BackupLoc = "$ServerLoc\Backup"
 # Game Config Folder Location
-$ConfigLoc = "$ServerLoc\ARK\cfg"
+$ConfigLoc = "$ServerLoc\ShooterGame\Saved\Config\WindowsServer"
 # Mods Folder
 $ModsLoc = 'D:\Program Files\Steam\SteamApps\common\ARK\ShooterGame\Content\Mods'
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
