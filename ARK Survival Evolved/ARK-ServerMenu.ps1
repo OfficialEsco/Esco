@@ -27,14 +27,28 @@ $authkey = '-authkey '
 # Steam ID http://steamcommunity.com/dev/managegameservers
 $steamid = '+sv_setsteamaccount '
 
-# ================ Server Settings ================
-$ServerName = "Escos $GameShortname Server"
+# ================ Global Settings ================
+$Map = 'TheCenter' #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
+$SessionName = "Escos $GameShortname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
 $MaxPlayers = '100'
 $Port = '7777'
 $Queryport = '27015'
-$Map = 'TheCenter' #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
+$Banlist = 'http://arkdedicated.com/banlist.txt'
+$AutoSavePeriodMinutes = '20'
+$ServerAutoForceRespawnWildDinosInterval = '86400' # Default 86400 = 1 day
+
+# ================ Server Settings ================
+$DifficultyOffset = '1.00000'
+$allowThirdPersonPlayer = '0'
+$ShowMapPlayerLocation = '1'
+$XPMultiplier = '20.00000'
+$HarvestAmountMultiplier = '3.00000'
+$TamingSpeedMultiplier = '1.00000'
+
+
+
 $ForceRespawnDinos = '0'
     if ( $ForceRespawnDinos -eq '1' ) { $RespawnDinos = '-ForceRespawnDinos' }
 
@@ -90,7 +104,7 @@ function subMenu1 {
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "1"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Create one click server starter"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "2"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Create Server.cfg"
+            Write-Host -ForegroundColor DarkCyan " Create GameUserSettings.ini"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "3"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Copy Mods from Local to Server Folder"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "4"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
@@ -139,7 +153,7 @@ function subMenu1 {
 function Start-Server {
     if (Test-Path $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe) {
         $paramline = "-nographics -console -usercon -condebug -UseBattlEye $RespawnDinos"
-        $settings = "$Map?SessionName=$ServerName?MaxPlayers=$MaxPlayers?Port=$Port?QueryPort=$Queryport?ServerPassword=$ServerPassword?ServerAdminPassword=$RconPassword?AllowAnyoneBabyImprintCuddle=true?listen" 
+        $settings = "$Map?SessionName=$SessionName?MaxPlayers=$MaxPlayers?Port=$Port?QueryPort=$Queryport?ServerPassword=$ServerPassword?ServerAdminPassword=$RconPassword?AllowAnyoneBabyImprintCuddle=true?listen" 
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -207,12 +221,122 @@ function Copy-ModsFolder {
 function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
         $ServerConfig = @(
-        "SessionName=$ServerName",
-        "ServerPassword=$ServerPassword",
+        "[ServerSettings]",
+        "allowThirdPersonPlayer=$allowThirdPersonPlayer"
+        "AllowCaveBuildingPvE=0"
+        "alwaysNotifyPlayerJoined=0"
+        "alwaysNotifyPlayerLeft=0"
+        "bAllowFlyerCarryPvE=0"
+        "bDisableStructureDecayPvE=1"
+        "DayCycleSpeedScale=1.00000"
+        "DayTimeSpeedScale=1.00000"
+        "NightTimeSpeedScale=1.00000"
+        "DinoCharacterFoodDrainMultiplier=1.00000"
+        "DinoCharacterHealthRecoveryMultiplier=1.00000"
+        "DinoCharacterStaminaDrainMultiplier=1.00000"
+        "DinoCountMultiplier=1.00000"
+        "DinoDamageMultiplier=1.00000"
+        "DinoResistanceMultiplier=1.00000"
+        "globalVoiceChat=0"
+        "HarvestAmountMultiplier=$HarvestAmountMultiplier"
+        "HarvestHealthMultiplier=1.00000"
+        "MaxStructuresInRange=6700"
+        "noTributeDownloads=0"
+        "PreventDownloadSurvivors=0"
+        "PreventDownloadItems=0"
+        "PreventDownloadDinos=0"
+        "PlayerCharacterFoodDrainMultiplier=1.00000"
+        "PlayerCharacterHealthRecoveryMultiplier=1.00000"
+        "PlayerCharacterStaminaDrainMultiplier=1.00000"
+        "PlayerCharacterWaterDrainMultiplier=1.00000"
+        "PlayerDamageMultiplier=1.00000",
+        "PlayerResistanceMultiplier=1.00000",
+        "proximityChat=0",
+        "ResourceNoReplenishRadiusPlayers=1.00000",
+        "ResourceNoReplenishRadiusStructures=1.00000",
+        "ResourcesRespawnPeriodMultiplier=1.00000",
         "ServerAdminPassword=$RconPassword",
-        "MaxPlayers=$MaxPlayers" 
+        "ServerCrosshair=0",
+        "serverForceNoHud=0",
+        "serverHardcore=0",
+        "ServerPassword=$ServerPassword",
+        "serverPVE=0",
+        "ShowMapPlayerLocation=$ShowMapPlayerLocation",
+        "StructureDamageMultiplier=1.00000",
+        "StructureResistanceMultiplier=1.00000",
+        "TamedDinoDamageMultiplier=1.00000",
+        "TamedDinoResistanceMultiplier=1.00000",
+        "TamingSpeedMultiplier=$TamingSpeedMultiplier",
+        "XPMultiplier=$XPMultiplier",
+        "EnablePVPGamma=0",
+        "EnablePVEGamma=0",
+        "SpectatorPassword=",
+        "DifficultyOffset=$DifficultyOffset",
+        "PvEStructureDecayPeriodMultiplier=1.00000",
+        "PvEStructureDecayDestructionPeriod=1.00000",
+        "Banlist=$Banlist",
+        "PvPStructureDecay=0",
+        "DisableDinoDecayPvE=0",
+        "PvEDinoDecayPeriodMultiplier=1.00000",
+        "AdminLogging=0",
+        "MaxTamedDinos=8000",
+        "MaxNumbersofPlayersInTribe=2",
+        "BattleNumOfTribestoStartGame=2",
+        "TimeToCollapseROD=100",
+        "BattleAutoStartGameInterval=100",
+        "BattleSuddenDeathInterval=300",
+        "KickIdlePlayersPeriod=1800",
+        "PerPlatformMaxStructuresMultiplier=1.00000",
+        "StructureDamageRepairCooldown=180",
+        "bForceAllStructureLocking=1",
+        "AutoDestroyOldStructuresMultiplier=0.00000",
+        "bUseVSync=0",
+        "MaxPlatformSaddleStructureLimit=100",
+        "bPassiveDefensesDamageRiderlessDinos=1",
+        "RCONPort=27020",
+        "AutoSavePeriodMinutes=$AutoSavePeriodMinutes",
+        "RCONServerGameLogBuffer=600",
+        "OverrideStructurePlatformPrevention=0",
+        "PreventOfflinePvPInterval=60.0",
+        "bPvPDinoDecay=1",
+        "bPvPStructureDecay=1",
+        "DisableImprintDinoBuff=1",
+        "AllowAnyoneBabyImprintCuddle=1",
+        "EnableExtraStructurePreventionVolumes=1",
+        "ShowFloatingDamageText=1",
+        "DestroyUnconnectedWaterPipes=0",
+        "OverrideOfficialDifficulty=1.0",
+        "TheMaxStructuresInRange=10500",
+        "MinimumDinoReuploadInterval=0",
+        "PvEAllowStructuresAtSupplyDrops=0",
+        "NPCNetworkStasisRangeScalePlayerCountStart=70",
+        "NPCNetworkStasisRangeScalePlayerCountEnd=120",
+        "NPCNetworkStasisRangeScalePercentEnd=0.50",
+        "MaxPersonalTamedDinos=500",
+        "AutoDestroyDecayedDinos=1",
+        "ClampItemSpoilingTimes=0",
+        "UseOptimizedHarvestingHealth=1",
+        "AllowCrateSpawnsOnTopOfStructures=1",
+        "ForceFlyerExplosives=0",
+        "PreventOfflinePvP=1",
+        "AllowFlyingStaminaRecovery=1",
+        "AllowMultipleAttachedC4=1",
+        "OxygenSwimSpeedStatMultiplier=1.00",
+        "bPvEDisableFriendlyFire=1",
+        "ServerAutoForceRespawnWildDinosInterval=$ServerAutoForceRespawnWildDinosInterval",
+        "DisableWeatherFog=0",
+        "RandomSupplyCratePoints=0",
+        "CrossARKAllowForeignDinoDownloads=0",
+        "PersonalTamedDinosSaddleStructureCost=19",
+        "[/script/engine.gamesession]",
+        "MaxPlayers=$MaxPlayers",
+        "[SessionSettings]",
+        "SessionName=$SessionName",
+        "[MessageOfTheDay]",
+        "Duration=5",
+        "Message=Ayylmao"            
         )
-        Set-Content -Value $ServerConfig -Path "$ConfigLoc\server.cfg"
+        Set-Content -Value $ServerConfig -Path "$ConfigLoc\GameUserSettings.ini"
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
      } else {
