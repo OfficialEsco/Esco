@@ -25,13 +25,14 @@ $checkvalid = '0'
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
 
 # ================ Steam Settings ================
-# Authkey http://steamcommunity.com/dev/apikey
-$authkey = '-authkey ' #Required -authkey xxxxx
-# Steam ID http://steamcommunity.com/dev/managegameservers
-$steamid = '+sv_setsteamaccount ' #Required -authkey xxxxx
+# Authkey http://steamcommunity.com/dev/apikey #Required
+$authkey = '-authkey '
+# Steam ID http://steamcommunity.com/dev/managegameservers #Required
+$steamid = '+sv_setsteamaccount '
 
 # ================ Global Settings ================
-$Map = 'TheCenter' #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
+#Map: #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
+$Map = 'TheCenter'
 $SessionName = "Escos $GameShortname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
@@ -40,11 +41,13 @@ $Port = '7777'
 $Queryport = '27015'
 $Banlist = 'http://arkdedicated.com/banlist.txt'
 $AutoSavePeriodMinutes = '20'
-$ServerAutoForceRespawnWildDinosInterval = '86400' # Default 86400 = 1 day
+#ServerAutoForceRespawnWildDinosInterval: Default 86400 = 1 day
+$ServerAutoForceRespawnWildDinosInterval = '86400'
 $MessageOfTheDay = 'Ayyylmao'
 
 # ================ Server Settings ================
-$ActiveMods = '' # xxx,xxx,xxx
+# Active Mods xxx,xxx,xxx
+$ActiveMods = ''
 $DifficultyOffset = '1.00000'
 
 # Player Settings
