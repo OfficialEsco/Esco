@@ -127,7 +127,7 @@ function subMenu1 {
             [void][System.Console]::ReadKey($true)
         }
         # Copy mods from Local to Server
-        if($subMenu1 -eq 2){
+        if($subMenu1 -eq 3){
             Copy-ModsFolder
             
             Write-Host "`nPress any key to return to the previous menu"
