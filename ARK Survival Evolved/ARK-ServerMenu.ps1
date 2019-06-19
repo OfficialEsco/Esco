@@ -26,9 +26,9 @@ $checkvalid = '0'
 
 # ================ Steam Settings ================
 # Authkey http://steamcommunity.com/dev/apikey
-$authkey = '-authkey ' #Required
+$authkey = '-authkey ' #Required -authkey xxxxx
 # Steam ID http://steamcommunity.com/dev/managegameservers
-$steamid = '+sv_setsteamaccount ' #Required
+$steamid = '+sv_setsteamaccount ' #Required -authkey xxxxx
 
 # ================ Global Settings ================
 $Map = 'TheCenter' #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
@@ -41,22 +41,32 @@ $Queryport = '27015'
 $Banlist = 'http://arkdedicated.com/banlist.txt'
 $AutoSavePeriodMinutes = '20'
 $ServerAutoForceRespawnWildDinosInterval = '86400' # Default 86400 = 1 day
-$MessageOfTheDay = "Ayyylmao"
+$MessageOfTheDay = 'Ayyylmao'
 
 # ================ Server Settings ================
 $ActiveMods = '' # xxx,xxx,xxx
 $DifficultyOffset = '1.00000'
+
+# Player Settings
 $allowThirdPersonPlayer = '0'
+$ServerCrosshair = '0'
 $ShowMapPlayerLocation = '1'
+
+# Farming
 $XPMultiplier = '20.00000'
 $HarvestAmountMultiplier = '3.00000'
 $TamingSpeedMultiplier = '1.00000'
+$ResourcesRespawnPeriodMultiplier = '3.00000'
+
+# Decay
+$DisableStructureDecayPvE = '1'
+$PvPStructureDecay = '0'
 
 # Download from other servers
-$noTributeDownloads = "0"
-$PreventDownloadSurvivors = "0"
-$PreventDownloadItems = "0"
-$PreventDownloadDinos = "0"
+$noTributeDownloads = '0'
+$PreventDownloadSurvivors = '0'
+$PreventDownloadItems = '0'
+$PreventDownloadDinos = '0'
 
 
 
@@ -164,7 +174,7 @@ function subMenu1 {
 function Start-Server {
     if (Test-Path $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe) {
         $paramline = "-nographics -console -usercon -condebug -UseBattlEye $RespawnDinos"
-        $settings = "$Map?SessionName=$SessionName?MaxPlayers=$MaxPlayers?Port=$Port?QueryPort=$Queryport?ServerPassword=$ServerPassword?ServerAdminPassword=$RconPassword?AllowAnyoneBabyImprintCuddle=true?listen" 
+        $settings = "$Map?SessionName=$SessionName?MaxPlayers=$MaxPlayers?Port=$Port?QueryPort=$Queryport?ServerPassword=$ServerPassword?ServerAdminPassword=$RconPassword?listen" 
 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
@@ -239,7 +249,7 @@ function New-ServerConfig {
         "alwaysNotifyPlayerJoined=0",
         "alwaysNotifyPlayerLeft=0",
         "bAllowFlyerCarryPvE=0",
-        "bDisableStructureDecayPvE=1",
+        "bDisableStructureDecayPvE=$DisableStructureDecayPvE",
         "DayCycleSpeedScale=1.00000",
         "DayTimeSpeedScale=1.00000",
         "NightTimeSpeedScale=1.00000",
@@ -266,9 +276,9 @@ function New-ServerConfig {
         "proximityChat=0",
         "ResourceNoReplenishRadiusPlayers=1.00000",
         "ResourceNoReplenishRadiusStructures=1.00000",
-        "ResourcesRespawnPeriodMultiplier=1.00000",
+        "ResourcesRespawnPeriodMultiplier=$ResourcesRespawnPeriodMultiplier",
         "ServerAdminPassword=$RconPassword",
-        "ServerCrosshair=0",
+        "ServerCrosshair=$ServerCrosshair",
         "serverForceNoHud=0",
         "serverHardcore=0",
         "ServerPassword=$ServerPassword",
@@ -287,7 +297,7 @@ function New-ServerConfig {
         "PvEStructureDecayPeriodMultiplier=1.00000",
         "PvEStructureDecayDestructionPeriod=1.00000",
         "Banlist=$Banlist",
-        "PvPStructureDecay=0",
+        "PvPStructureDecay=$PvPStructureDecay",
         "DisableDinoDecayPvE=0",
         "PvEDinoDecayPeriodMultiplier=1.00000",
         "AdminLogging=0",
