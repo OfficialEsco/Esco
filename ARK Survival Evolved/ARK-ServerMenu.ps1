@@ -1,6 +1,7 @@
 $GameShortname = 'ARK'
 $GameFullname = 'ARK: Survival Evolved'
 $host.UI.RawUI.WindowTitle = "$GameFullname Server Menu"
+
 # ================ SteamCMD Settings ================
 # Steam Username and Password (Or anonymous)
 $SteamUsername = 'anonymous'
@@ -9,11 +10,13 @@ $SteamPassword = ''
 $CMDLoc = 'D:\Servers\steamcmd'
 # Server Location
 $ServerLoc = "D:\Servers\$GameShortname"
+
+# ================ Other Settings ================
 # Server Location
 $BackupLoc = "$ServerLoc\Backup"
 # Game Config Folder Location
 $ConfigLoc = "$ServerLoc\ShooterGame\Saved\Config\WindowsServer"
-# Mods Folder
+# Local Mods Folder Location
 $ModsLoc = 'D:\Program Files\Steam\SteamApps\common\ARK\ShooterGame\Content\Mods'
 # Server AppID https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
 $appid = '376030'
@@ -23,9 +26,9 @@ $checkvalid = '0'
 
 # ================ Steam Settings ================
 # Authkey http://steamcommunity.com/dev/apikey
-$authkey = '-authkey '
+$authkey = '-authkey ' #Required
 # Steam ID http://steamcommunity.com/dev/managegameservers
-$steamid = '+sv_setsteamaccount '
+$steamid = '+sv_setsteamaccount ' #Required
 
 # ================ Global Settings ================
 $Map = 'TheCenter' #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
@@ -41,12 +44,19 @@ $ServerAutoForceRespawnWildDinosInterval = '86400' # Default 86400 = 1 day
 $MessageOfTheDay = "Ayyylmao"
 
 # ================ Server Settings ================
+$ActiveMods = '' # xxx,xxx,xxx
 $DifficultyOffset = '1.00000'
 $allowThirdPersonPlayer = '0'
 $ShowMapPlayerLocation = '1'
 $XPMultiplier = '20.00000'
 $HarvestAmountMultiplier = '3.00000'
 $TamingSpeedMultiplier = '1.00000'
+
+# Download from other servers
+$noTributeDownloads = "0"
+$PreventDownloadSurvivors = "0"
+$PreventDownloadItems = "0"
+$PreventDownloadDinos = "0"
 
 
 
@@ -210,7 +220,7 @@ function Update-Server {
 
 function Copy-ModsFolder {
     if (Test-Path $ModsLoc) {
-        Copy-Item -Path "$ModsLoc" -Destination "$ServerLoc\ShooterGame\Content" -recurse -Force
+        Copy-Item -Path "$ModsLoc" -Destination "$ServerLoc\ShooterGame\Content\Mods" -recurse -Force
         Write-Host 
         Write-Host 'Local Mods copied to Server folder.' -ForegroundColor Green
      } else {
@@ -223,6 +233,7 @@ function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
         $ServerConfig = @(
         "[ServerSettings]",
+        "ActiveMods=$ActiveMods"
         "allowThirdPersonPlayer=$allowThirdPersonPlayer",
         "AllowCaveBuildingPvE=0",
         "alwaysNotifyPlayerJoined=0",
@@ -242,10 +253,10 @@ function New-ServerConfig {
         "HarvestAmountMultiplier=$HarvestAmountMultiplier",
         "HarvestHealthMultiplier=1.00000",
         "MaxStructuresInRange=6700",
-        "noTributeDownloads=0",
-        "PreventDownloadSurvivors=0",
-        "PreventDownloadItems=0",
-        "PreventDownloadDinos=0",
+        "noTributeDownloads=$noTributeDownloads",
+        "PreventDownloadSurvivors=$PreventDownloadSurvivors",
+        "PreventDownloadItems=$PreventDownloadItems",
+        "PreventDownloadDinos=$PreventDownloadDinos",
         "PlayerCharacterFoodDrainMultiplier=1.00000",
         "PlayerCharacterHealthRecoveryMultiplier=1.00000",
         "PlayerCharacterStaminaDrainMultiplier=1.00000",
@@ -339,9 +350,9 @@ function New-ServerConfig {
         "Duration=30",
         "Message=$MessageOfTheDay"            
         )
-        Set-ItemProperty -Path "$ServerConfig\GameUserSettings.ini" -Name IsReadOnly -Value $false
+        Set-ItemProperty -Path "$ConfigLoc\GameUserSettings.ini" -Name IsReadOnly -Value $false
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\GameUserSettings.ini"
-        Set-ItemProperty -Path "$ServerConfig\GameUserSettings.ini" -Name IsReadOnly -Value $true
+        Set-ItemProperty -Path "$ConfigLoc\GameUserSettings.ini" -Name IsReadOnly -Value $true
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
      } else {
