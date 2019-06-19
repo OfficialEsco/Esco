@@ -76,6 +76,9 @@ $PreventDownloadDinos = '0'
 $ForceRespawnDinos = '0'
     if ( $ForceRespawnDinos -eq '1' ) { $RespawnDinos = '-ForceRespawnDinos' }
 
+$paramline = "-nographics -console -usercon -condebug -UseBattlEye $RespawnDinos"
+$settings = "$Map ?SessionName=$SessionName ?MaxPlayers= $MaxPlayers ?Port=$Port ?QueryPort=$Queryport ?ServerPassword=$ServerPassword ?ServerAdminPassword=$RconPassword ?listen"
+
 function mainMenu {
     $mainMenu = 'X'
     while($mainMenu -ne ''){
@@ -175,10 +178,7 @@ function subMenu1 {
 }
 
 function Start-Server {
-    if (Test-Path $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe) {
-        $paramline = "-nographics -console -usercon -condebug -UseBattlEye $RespawnDinos"
-        $settings = "$Map?SessionName=$SessionName?MaxPlayers=$MaxPlayers?Port=$Port?QueryPort=$Queryport?ServerPassword=$ServerPassword?ServerAdminPassword=$RconPassword?listen" 
-
+    if (Test-Path $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe) { 
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "Launching $GameFullname Server"
@@ -186,7 +186,7 @@ function Start-Server {
         Write-Host 
         Write-Host 'Launching . . .'
         Write-Host 
-        Start-Process "$ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+        Start-Process "$ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe" -ArgumentList "$settings $paramline $authkey $steamid" -NoNewWindow
         Clear-Host
         Write-Host '--------------------------------------------------------------------------------'
         Write-Host "$GameFullname Server running!"
@@ -380,7 +380,7 @@ function New-EasyStart {
         "Write-Host 'Updating Server'",
         "Start-Process $CMDLoc\steamcmd.exe -ArgumentList +login $SteamUsername $SteamPassword +force_install_dir $ServerLoc +app_update $appid $cmdparam +quit -Wait",
         "Write-Host 'Starting Server'",
-        "Start-Process $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe -ArgumentList $paramline $settings $authkey $steamid -NoNewWindow"
+        "Start-Process $ServerLoc\ShooterGame\Binaries\Win64\ShooterGameServer.exe -ArgumentList $settings $paramline $authkey $steamid -NoNewWindow"
         )
         Set-Content -Value $StartupConfig -Path "$ServerLoc\Start.ps1"
         Write-Host 
