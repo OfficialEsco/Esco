@@ -38,6 +38,7 @@ $Queryport = '27015'
 $Banlist = 'http://arkdedicated.com/banlist.txt'
 $AutoSavePeriodMinutes = '20'
 $ServerAutoForceRespawnWildDinosInterval = '86400' # Default 86400 = 1 day
+$MessageOfTheDay = "Ayyylmao"
 
 # ================ Server Settings ================
 $DifficultyOffset = '1.00000'
@@ -222,33 +223,33 @@ function New-ServerConfig {
     if (Test-Path $ConfigLoc) {
         $ServerConfig = @(
         "[ServerSettings]",
-        "allowThirdPersonPlayer=$allowThirdPersonPlayer"
-        "AllowCaveBuildingPvE=0"
-        "alwaysNotifyPlayerJoined=0"
-        "alwaysNotifyPlayerLeft=0"
-        "bAllowFlyerCarryPvE=0"
-        "bDisableStructureDecayPvE=1"
-        "DayCycleSpeedScale=1.00000"
-        "DayTimeSpeedScale=1.00000"
-        "NightTimeSpeedScale=1.00000"
-        "DinoCharacterFoodDrainMultiplier=1.00000"
-        "DinoCharacterHealthRecoveryMultiplier=1.00000"
-        "DinoCharacterStaminaDrainMultiplier=1.00000"
-        "DinoCountMultiplier=1.00000"
-        "DinoDamageMultiplier=1.00000"
-        "DinoResistanceMultiplier=1.00000"
-        "globalVoiceChat=0"
-        "HarvestAmountMultiplier=$HarvestAmountMultiplier"
-        "HarvestHealthMultiplier=1.00000"
-        "MaxStructuresInRange=6700"
-        "noTributeDownloads=0"
-        "PreventDownloadSurvivors=0"
-        "PreventDownloadItems=0"
-        "PreventDownloadDinos=0"
-        "PlayerCharacterFoodDrainMultiplier=1.00000"
-        "PlayerCharacterHealthRecoveryMultiplier=1.00000"
-        "PlayerCharacterStaminaDrainMultiplier=1.00000"
-        "PlayerCharacterWaterDrainMultiplier=1.00000"
+        "allowThirdPersonPlayer=$allowThirdPersonPlayer",
+        "AllowCaveBuildingPvE=0",
+        "alwaysNotifyPlayerJoined=0",
+        "alwaysNotifyPlayerLeft=0",
+        "bAllowFlyerCarryPvE=0",
+        "bDisableStructureDecayPvE=1",
+        "DayCycleSpeedScale=1.00000",
+        "DayTimeSpeedScale=1.00000",
+        "NightTimeSpeedScale=1.00000",
+        "DinoCharacterFoodDrainMultiplier=1.00000",
+        "DinoCharacterHealthRecoveryMultiplier=1.00000",
+        "DinoCharacterStaminaDrainMultiplier=1.00000",
+        "DinoCountMultiplier=1.00000",
+        "DinoDamageMultiplier=1.00000",
+        "DinoResistanceMultiplier=1.00000",
+        "globalVoiceChat=0",
+        "HarvestAmountMultiplier=$HarvestAmountMultiplier",
+        "HarvestHealthMultiplier=1.00000",
+        "MaxStructuresInRange=6700",
+        "noTributeDownloads=0",
+        "PreventDownloadSurvivors=0",
+        "PreventDownloadItems=0",
+        "PreventDownloadDinos=0",
+        "PlayerCharacterFoodDrainMultiplier=1.00000",
+        "PlayerCharacterHealthRecoveryMultiplier=1.00000",
+        "PlayerCharacterStaminaDrainMultiplier=1.00000",
+        "PlayerCharacterWaterDrainMultiplier=1.00000",
         "PlayerDamageMultiplier=1.00000",
         "PlayerResistanceMultiplier=1.00000",
         "proximityChat=0",
@@ -328,15 +329,19 @@ function New-ServerConfig {
         "RandomSupplyCratePoints=0",
         "CrossARKAllowForeignDinoDownloads=0",
         "PersonalTamedDinosSaddleStructureCost=19",
+        "",
         "[/script/engine.gamesession]",
         "MaxPlayers=$MaxPlayers",
         "[SessionSettings]",
         "SessionName=$SessionName",
+        "",
         "[MessageOfTheDay]",
-        "Duration=5",
-        "Message=Ayylmao"            
+        "Duration=30",
+        "Message=$MessageOfTheDay"            
         )
+        Set-ItemProperty -Path "$ServerConfig\GameUserSettings.ini" -Name IsReadOnly -Value $false
         Set-Content -Value $ServerConfig -Path "$ConfigLoc\GameUserSettings.ini"
+        Set-ItemProperty -Path "$ServerConfig\GameUserSettings.ini" -Name IsReadOnly -Value $true
         Write-Host 
         Write-Host "$GameShortname Server.cfg created." -ForegroundColor Green
      } else {
