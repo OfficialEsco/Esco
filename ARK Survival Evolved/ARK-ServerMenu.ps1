@@ -32,11 +32,11 @@ $steamid = '+sv_setsteamaccount '
 
 # ================ Global Settings ================
 #Map: #(TheIsland / TheCenter / ScorchedEarth_P / Ragnarok / Aberration_P / Extinction / Valguero_P)
-$Map = 'TheCenter'
+$Map = 'TheIsland'
 $SessionName = "Escos $GameShortname Server"
 $ServerPassword = 'qwerty'
 $RconPassword = 'qwerty'
-$MaxPlayers = '100'
+$MaxPlayers = '10'
 $Port = '7777'
 $Queryport = '27015'
 $Banlist = 'http://arkdedicated.com/banlist.txt'
@@ -51,15 +51,15 @@ $ActiveMods = ''
 $DifficultyOffset = '1.00000'
 
 # Player Settings
-$allowThirdPersonPlayer = '0'
-$ServerCrosshair = '0'
+$allowThirdPersonPlayer = '1'
+$ServerCrosshair = '1'
 $ShowMapPlayerLocation = '1'
 
 # Farming
-$XPMultiplier = '20.00000'
-$HarvestAmountMultiplier = '3.00000'
-$TamingSpeedMultiplier = '1.00000'
-$ResourcesRespawnPeriodMultiplier = '3.00000'
+$XPMultiplier = '10.00000'
+$HarvestAmountMultiplier = '2.00000'
+$TamingSpeedMultiplier = '3.00000'
+$ResourcesRespawnPeriodMultiplier = '2.00000'
 
 # Decay
 $DisableStructureDecayPvE = '1'
@@ -77,7 +77,7 @@ $ForceRespawnDinos = '0'
     if ( $ForceRespawnDinos -eq '1' ) { $RespawnDinos = '-ForceRespawnDinos' }
 
 $paramline = "-nographics -console -usercon -condebug -UseBattlEye $RespawnDinos"
-$settings = "$Map ?SessionName=$SessionName ?MaxPlayers= $MaxPlayers ?Port=$Port ?QueryPort=$Queryport ?ServerPassword=$ServerPassword ?ServerAdminPassword=$RconPassword ?listen"
+$settings = "$Map ?SessionName=$SessionName ?MaxPlayers=$MaxPlayers ?Port=$Port ?QueryPort=$Queryport ?ServerPassword=$ServerPassword ?ServerAdminPassword=$RconPassword ?listen"
 
 function mainMenu {
     $mainMenu = 'X'
@@ -357,7 +357,7 @@ function New-ServerConfig {
         "[/script/engine.gamesession]",
         "MaxPlayers=$MaxPlayers",
         "[SessionSettings]",
-        "SessionName=$SessionName",
+        #"SessionName=$SessionName",
         "",
         "[MessageOfTheDay]",
         "Duration=30",
