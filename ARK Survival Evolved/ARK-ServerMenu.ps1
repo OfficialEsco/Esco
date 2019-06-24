@@ -17,10 +17,10 @@ $checkvalid = '0' # Verify server files? (0 = no, 1 = yes)
     if ( $checkvalid -eq '1' ) { $cmdparam = 'validate' }
 
 # ================ Steam Settings ================
-# Authkey http://steamcommunity.com/dev/apikey #Required
-$authkey = '-authkey A28C8BA7BEE106E72C63214AFA473F0D'
-# Steam ID http://steamcommunity.com/dev/managegameservers #Required
-$steamid = '+sv_setsteamaccount 464E3E6D90AD6B49DCD8F7644818AD1A'
+# Authkey http://steamcommunity.com/dev/apikey 
+$authkey = '-authkey ' #Required
+# Steam ID http://steamcommunity.com/dev/managegameservers
+$steamid = '+sv_setsteamaccount ' #Required
 
 # ================ Other Settings ================
 # Server Location
