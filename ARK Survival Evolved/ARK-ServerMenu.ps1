@@ -74,6 +74,7 @@ $PreventDownloadDinos = '0'
 $ForceRespawnDinos = '0'
 
 # Server Start Up Settings
+if ( $ForceRespawnDinos -eq '1' ) { $RespawnDinos = '-ForceRespawnDinos' } else { $RespawnDinos = '' }
 $StartupSettings = @(
     "?listen"
     "?SessionName=$SessionName"
@@ -87,7 +88,6 @@ $StartupSettings = @(
 )
 
 # Parmaline Settings
-if ( $ForceRespawnDinos -eq '1' ) { $RespawnDinos = '-ForceRespawnDinos' } else { $RespawnDinos = '' }
 $paramline = @(
     "-nographics"
     "-console"
