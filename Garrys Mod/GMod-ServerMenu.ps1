@@ -34,9 +34,6 @@ $Workshop_Collection = '+host_workshop_collection 703905444'
 $Gamemode = '' # Sandbox, Prop_hunt, TheHidden, TheStalker, HideAndSeek, CopsAndRunners, MelonBomber, Murder, TrashComactor, terrortown, GuessWho
 $Map = '' # cs_office
 
-# Etc
-$settings = "-port $Port $Gamemode -tickrate $Tickrate -maxplayers_override $MaxPlayers $Workshop_Collection"
-
 # Server Start Up Settings
 if ( $Map -ne '' ) { $ForceMap = "+map $Map" } else { $ForceMap = '' }
 if ( $Gamemode -ne '' ) { $ForceGamemode = "+gamemode $Gamemode" } else { $ForceGamemode = '' }
