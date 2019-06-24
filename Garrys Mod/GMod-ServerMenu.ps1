@@ -31,22 +31,33 @@ $MaxPlayers = '12'
 $Port = '27016'
 $Tickrate = '100'
 $Workshop_Collection = '+host_workshop_collection 703905444'
-#$Select_Gamemode = "Sandbox"
-#    if ( $Select_Gamemode -eq "Sandbox" )           { $Gamemode = '+gamemode sandbox +map gm_flatgrass' }
-#    if ( $Select_Gamemode -eq "Prophunt" )          { $Gamemode = '+gamemode prop_hunt +map cs_office' }
-#    if ( $Select_Gamemode -eq "TheHidden" )         { $Gamemode = '+gamemode thehidden +map hdn_kindergarten' }
-#    if ( $Select_Gamemode -eq "TheStalker" )        { $Gamemode = '+gamemode stalker +map ts_annex' }
-#    if ( $Select_Gamemode -eq "HideAndSeek" )       { $Gamemode = '+gamemode hideandseek +map cs_office' }
-#    if ( $Select_Gamemode -eq "CopsAndRunners" )    { $Gamemode = '+gamemode copsandrunners +map cs_office' }
-#    if ( $Select_Gamemode -eq "MelonBomber" )       { $Gamemode = '+gamemode melonbomber +map mb_melonbomber' }
-#    if ( $Select_Gamemode -eq "Murder" )            { $Gamemode = '+gamemode murder +map cs_office' }
-#    if ( $Select_Gamemode -eq "TrashCompactor" )    { $Gamemode = '+gamemode trashcompactor +map tc_canal' }
-#    if ( $Select_Gamemode -eq "TTT" )               { $Gamemode = '+gamemode terrortown +map ttt_district_a4' }
-#    if ( $Select_Gamemode -eq "GuessWho" )          { $Gamemode = '+gamemode guesswho +map cs_office' }
+$Gamemode = '' # Sandbox, Prop_hunt, TheHidden, TheStalker, HideAndSeek, CopsAndRunners, MelonBomber, Murder, TrashComactor, terrortown, GuessWho
+$Map = '' # cs_office
 
 # Etc
-$paramline = '-nographics -console -usercon -condebug -game garrysmod'
 $settings = "-port $Port $Gamemode -tickrate $Tickrate -maxplayers_override $MaxPlayers $Workshop_Collection"
+
+# Server Start Up Settings
+if ( $Map -ne '' ) { $ForceMap = "+map $Map" } else { $ForceMap = '' }
+if ( $Gamemode -ne '' ) { $ForceGamemode = "+gamemode $Gamemode" } else { $ForceGamemode = '' }
+$Settings = @(
+    "-port $Port"
+    $Gamemode
+    $ForceGameMode
+    $ForceMap
+    "-tickrate $Tickrate"
+    "-maxplayers_override $MaxPlayers"
+    "$Workshop_Collection"
+)
+
+# Parmaline Settings
+$paramline = @(
+    "-nographics"
+    "-console"
+    "-condebug"
+    "-usercon"
+    "-game garrysmod"
+)
 
 function mainMenu {
     $mainMenu = 'X'
@@ -63,7 +74,10 @@ function mainMenu {
         $mainMenu = Read-Host "`nSelection (leave blank to quit)"
         # Start Server
         if($mainMenu -eq 1){
-            modeMenu
+            Start-Server
+
+            Write-Host "`nPress any key to return to the previous menu"
+            [void][System.Console]::ReadKey($true)
         }
         # Update Server
         if($mainMenu -eq 2){
@@ -125,146 +139,102 @@ function subMenu1 {
     }
 }
 
-function modeMenu {
-    $modeMenu = 'X'
-    while($modeMenu -ne ''){
+function Start-Server {
+
+    if ($Gamemode -eq '') {
         Clear-Host
-        Write-Host "`n`t`t Server Menu`n"
-        Write-Host -ForegroundColor Cyan "Game Mode Menu"
+        Write-Host -ForegroundColor Cyan "Select Gamemode"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "1"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Sandbox"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "2"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Prophunt"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "3"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " The Hidden"
+            Write-Host -ForegroundColor DarkCyan " TheHidden"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "4"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " The Stalker"
+            Write-Host -ForegroundColor DarkCyan " TheStalker"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "5"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Hide And Seek"
+            Write-Host -ForegroundColor DarkCyan " HideAndSeek"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "6"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Cops And Runners"
+            Write-Host -ForegroundColor DarkCyan " CopsAndRunners"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "7"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Melon Bomber"
+            Write-Host -ForegroundColor DarkCyan " MelonBomber"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "8"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
             Write-Host -ForegroundColor DarkCyan " Murder"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "9"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Trash Compactor"
+            Write-Host -ForegroundColor DarkCyan " TrashCompactor"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "10"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Trouble in Terrorist Town"
+            Write-Host -ForegroundColor DarkCyan " TTT"
         Write-Host -ForegroundColor DarkCyan -NoNewline "`n["; Write-Host -NoNewline "11"; Write-Host -ForegroundColor DarkCyan -NoNewline "]"; `
-            Write-Host -ForegroundColor DarkCyan " Guess Who"
-        $modeMenu = Read-Host "`nSelection (leave blank to quit)"
-        # Start Sandbox
-        if($modeMenu -eq 1){
+            Write-Host -ForegroundColor DarkCyan " GuessWho"
+        $GameModeSelect = Read-Host "`nSelect a Gamemode (leave blank to go back)"
+        # Sandbox
+        if($GameModeSelect -eq 1){
             $Gamemode = '+gamemode sandbox +map gm_flatgrass'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Prop Hunt
-        if($modeMenu -eq 2){
+        # Prophunt
+        if($GameModeSelect -eq 2){
             $Gamemode = '+gamemode prop_hunt +map cs_office'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start The Hidden
-        if($modeMenu -eq 3){
+        # TheHidden
+        if($GameModeSelect -eq 3){
             $Gamemode = '+gamemode thehidden +map hdn_kindergarten'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start The Stalker
-        if($modeMenu -eq 4){
+        # TheStalker
+        if($GameModeSelect -eq 4){
             $Gamemode = '+gamemode stalker +map ts_annex'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Hide and Seek
-        if($modeMenu -eq 5){
+        # HideAndSeek
+        if($GameModeSelect -eq 5){
             $Gamemode = '+gamemode hideandseek +map cs_office'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Cops and Runners
-        if($modeMenu -eq 6){
+        # CopsAndRunners
+        if($GameModeSelect -eq 6){
             $Gamemode = '+gamemode copsandrunners +map cs_office'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Mellon Bomber
-        if($modeMenu -eq 7){
+        # MelonBomber
+        if($GameModeSelect -eq 7){
             $Gamemode = '+gamemode melonbomber +map mb_melonbomber'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Murder
-        if($modeMenu -eq 8){
+        # Murder
+        if($GameModeSelect -eq 8){
             $Gamemode = '+gamemode murder +map cs_office'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Trash Compactor
-        if($modeMenu -eq 9){
+        # TrashCompactor
+        if($GameModeSelect -eq 9){
             $Gamemode = '+gamemode trashcompactor +map tc_canal'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Trouble in Terrorist Town
-        if($modeMenu -eq 10){
+        # TTT
+        if($GameModeSelect -eq 10){
             $Gamemode = '+gamemode terrortown +map ttt_district_a4'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
-        # Start Guess Who
-        if($modeMenu -eq 11){
+        # GuessWho
+        if($GameModeSelect -eq 11){
             $Gamemode = '+gamemode guesswho +map cs_office'
-            Start-Server
-            
-            Write-Host "`nPress any key to return to the previous menu"
-            [void][System.Console]::ReadKey($true)
         }
     }
-}
 
-function Start-Server {
-    if (Test-Path $ServerLoc\srcds.exe) {
-        Clear-Host
-        Write-Host '--------------------------------------------------------------------------------'
-        Write-Host "Launching $GameFullname Server"
-        Write-Host '--------------------------------------------------------------------------------'
-        Write-Host 
-        Write-Host 'Launching . . .'
-        Write-Host 
-        Start-Process "$ServerLoc\srcds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
-        Clear-Host
-        Write-Host '--------------------------------------------------------------------------------'
-        Write-Host "$GameFullname Server running!"
-        Write-Host '--------------------------------------------------------------------------------'
-        Write-Host 
-        Write-Host 'Have fun!'
-        Write-Host 
-     } else {
-        Write-Host
-        Write-Host "Server executable not found, install server files or check server location." -ForegroundColor Red
+
+    if ($Gamemode -ne '') {
+        if (Test-Path $ServerLoc\srcds.exe) {
+            Clear-Host
+            Write-Host '--------------------------------------------------------------------------------'
+            Write-Host "Launching $GameFullname Server"
+            Write-Host '--------------------------------------------------------------------------------'
+            Write-Host 
+            Write-Host 'Launching . . .'
+            Write-Host 
+            Start-Process "$ServerLoc\srcds.exe" -ArgumentList "$paramline $settings $authkey $steamid" -NoNewWindow
+            Clear-Host
+            Write-Host '--------------------------------------------------------------------------------'
+            Write-Host "$GameFullname Server running!"
+            Write-Host '--------------------------------------------------------------------------------'
+            Write-Host 
+            Write-Host 'Have fun!'
+            Write-Host 
+         } else {
+            Write-Host
+            Write-Host "Server executable not found, install server files or check server location." -ForegroundColor Red
+        }
     }
 }
 
