@@ -1,6 +1,9 @@
 # Counter-Strike 1.6
 
-Launch Options: -novid -freq 144 -noforcemparms -noforcemaccel -stretchaspect
+Launch Options:
+```
+-novid -freq 144 -noforcemparms -noforcemaccel -stretchaspect
+```
 
 ## Work in Progress
 
@@ -14,7 +17,7 @@ Launch Options: -novid -freq 144 -noforcemparms -noforcemaccel -stretchaspect
 
 ### Server Starters
 - [X] Start.bat
-- [ ] 
+- [ ]
 
 ### Server Configs
 

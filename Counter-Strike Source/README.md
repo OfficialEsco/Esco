@@ -1,6 +1,9 @@
 # Counter-Strike Source
 
-Launch Options: -novid -freq 144
+Launch Options:
+```
+-novid -freq 144
+```
 
 ## Work in Progress
 
@@ -14,7 +17,7 @@ Launch Options: -novid -freq 144
 
 ### Server Starters
 - [X] Start.bat
-- [ ] 
+- [ ]
 
 ### Server Configs
 - [X] adminmenu

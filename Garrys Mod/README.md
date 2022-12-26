@@ -1,6 +1,9 @@
 # Garrys Mod
 
-Launch Options: -novid -freq 144 -processheap
+Launch Options:
+```
+-novid -freq 144 -processheap
+```
 
 ## Work in Progress
 
@@ -10,4 +13,4 @@ Launch Options: -novid -freq 144 -processheap
 ## Finished
 
 - [X] Start.bat
-- [ ] 
+- [ ]
