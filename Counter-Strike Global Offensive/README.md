@@ -1,6 +1,13 @@
 # Counter-Strike Global Offensive
 
-Launch Options: -novid -freq 144 -tickrate 128 +mat_queue_mode 2
+Launch Options:  
+```
+-novid -freq 144 -tickrate 128 +mat_queue_mode 2
+```
+
+```
+gamemoderun mangohud %command% -novid -freq 144 -tickrate 128 -nojoy +mat_queue_mode 2 -maxdownloadfilesizem 1024
+```
 
 ## Work in Progress
 
