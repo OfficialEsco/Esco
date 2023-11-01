@@ -1,4 +1,9 @@
-# Counter-Strike Global Offensive
+# Counter-Strike 2
+
+Autoexec location:
+```
+SteamLibrary/steamapps/common/Counter-Strike Global Offensive/game/core/cfg/autoexec.cfg
+```
 
 Launch Options:
 ```
@@ -11,7 +16,7 @@ gamemoderun mangohud %command% -novid -freq 144 -tickrate 128 -nojoy +mat_queue_
 
 ## Work in Progress
 
-- [ ] Counter-Strike Global Offensive Server Menu
+- [ ] Server Menu
 
 
 ## Finished
@@ -23,7 +28,6 @@ gamemoderun mangohud %command% -novid -freq 144 -tickrate 128 -nojoy +mat_queue_
 ### Server Starters
 
 - [X] Start.bat
-- [ ]
 
 ### Server Configs
 
