@@ -11,7 +11,7 @@ Launch Options:
 ```
 
 ```
-gamemoderun mangohud %command% -novid -freq 144 -tickrate 128 -nojoy +mat_queue_mode 2 -maxdownloadfilesizem 1024
+SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS=0 ENABLE_VKBASALT=1 OBS_VKCAPTURE=1 gamemoderun mangohud %command%
 ```
 
 ## Work in Progress
