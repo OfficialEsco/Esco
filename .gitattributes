@@ -2,6 +2,6 @@
 *.json text eol=crlf
 *.ps1 text working-tree-encoding=UTF-8 eol=crlf
 *.bat text working-tree-encoding=UTF-8 eol=crlf
-*.cfg text eol=crlf
+*.cfg text eol=auto
 *.md text eol=crlf
 *.txt text eol=crlf
