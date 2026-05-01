@@ -46,3 +46,8 @@ mv libSDL2-2.0.so.0 libSDL2-2.0.so.0.bak
 # Create symlink to system's 32-bit SDL2
 ln -s /usr/lib/libSDL2-2.0.so.0 libSDL2-2.0.so.0
 ```
+
+### Invisible underscore in console (Steam_Legacy)
+fix: https://github.com/ValveSoftware/halflife/issues/104#issuecomment-691487622
+
+add `"dropshadow" "1"` to `TrackerScheme.res` and `ClientScheme.res` under FONTS
